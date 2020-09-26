@@ -1,0 +1,87 @@
+cabal-version:       >=1.10
+
+name:                gus-regon
+version:             0.1.0.0
+synopsis:            GUS REGON API client
+description:         
+  Haskell client for GUS REGON (BIR 1.1) API
+
+homepage:            https://github.com/mulderr/gus-regon
+bug-reports:         https://github.com/mulderr/gus-regon/issues
+license:             MIT
+license-file:        LICENSE
+author:              Maciej Kazulak
+maintainer:          kazulakm@gmail.com
+-- copyright:
+-- category:
+build-type:          Simple
+extra-source-files:  CHANGELOG.md
+
+library
+  default-language:  Haskell2010
+  hs-source-dirs:    src
+  ghc-options:       -Wall -O2
+  default-extensions:
+      LambdaCase
+      OverloadedStrings
+      ScopedTypeVariables
+      TypeApplications
+  exposed-modules:
+      Web.BIR.BIR11.Methods
+    , Web.BIR.BIR11.Methods.Lifted
+    , Web.BIR.BIR11.Parse
+    , Web.BIR.BIR11.Soap
+    , Web.BIR.BIR11.Xml
+    , Web.BIR.BIR11.Types
+    , Web.BIR.BIR11.Types.Common
+    , Web.BIR.BIR11.Types.Error
+    , Web.BIR.BIR11.Types.Report
+    , Web.BIR.BIR11.Types.Report.Bir11JednLokalnaOsFizycznej
+    , Web.BIR.BIR11.Types.Report.Bir11JednLokalnaOsFizycznejPkd
+    , Web.BIR.BIR11.Types.Report.Bir11JednLokalnaOsPrawnej
+    , Web.BIR.BIR11.Types.Report.Bir11JednLokalnaOsPrawnejPkd
+    , Web.BIR.BIR11.Types.Report.Bir11OsFizycznaDaneOgolne
+    , Web.BIR.BIR11.Types.Report.Bir11OsFizycznaDzialalnoscCeidg
+    , Web.BIR.BIR11.Types.Report.Bir11OsFizycznaDzialalnoscPozostala
+    , Web.BIR.BIR11.Types.Report.Bir11OsFizycznaDzialalnoscRolnicza
+    , Web.BIR.BIR11.Types.Report.Bir11OsFizycznaDzialalnoscSkreslonaDo20141108
+    , Web.BIR.BIR11.Types.Report.Bir11OsFizycznaListaJednLokalnych
+    , Web.BIR.BIR11.Types.Report.Bir11OsFizycznaPkd
+    , Web.BIR.BIR11.Types.Report.Bir11OsPrawna
+    , Web.BIR.BIR11.Types.Report.Bir11OsPrawnaListaJednLokalnych
+    , Web.BIR.BIR11.Types.Report.Bir11OsPrawnaPkd
+    , Web.BIR.BIR11.Types.Report.Bir11OsPrawnaSpCywilnaWspolnicy
+    , Web.BIR.BIR11.Types.Report.Bir11TypPodmiotu
+    , Web.BIR.BIR11.Types.Search
+  build-depends:
+      base >=4.13 && <5
+    , aeson
+    , bytestring
+    , case-insensitive
+    , containers
+    , lens
+    , monad-control
+    , mtl
+    , Only
+    , text
+    , time
+    , wreq
+    , http-client
+    , attoparsec
+    , xml-conduit
+    , xml-conduit-writer
+    , xml-lens
+
+test-suite test
+  default-language: Haskell2010
+  type: exitcode-stdio-1.0
+  hs-source-dirs: tests
+  main-is: test.hs
+  build-depends:
+      base >= 4.13 && < 5
+    , gus-regon
+    , lens
+    , tasty >= 1.2
+    , tasty-hunit
+    , time
+    , text
