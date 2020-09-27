@@ -34,7 +34,7 @@ library
     , Web.BIR.BIR11.Methods.Lifted
     , Web.BIR.BIR11.Parse
     , Web.BIR.BIR11.Soap
-    , Web.BIR.BIR11.Xml
+    , Web.BIR.BIR11.TH
     , Web.BIR.BIR11.Types
     , Web.BIR.BIR11.Types.Common
     , Web.BIR.BIR11.Types.Error
@@ -56,21 +56,23 @@ library
     , Web.BIR.BIR11.Types.Report.Bir11OsPrawnaSpCywilnaWspolnicy
     , Web.BIR.BIR11.Types.Report.Bir11TypPodmiotu
     , Web.BIR.BIR11.Types.Search
+    , Web.BIR.BIR11.Xml
   build-depends:
       base >=4.13 && <5
     , aeson
+    , attoparsec
     , bytestring
     , case-insensitive
     , containers
+    , http-client
     , lens
     , monad-control
     , mtl
     , Only
     , text
+    , template-haskell
     , time
     , wreq
-    , http-client
-    , attoparsec
     , xml-conduit
     , xml-conduit-writer
     , xml-lens

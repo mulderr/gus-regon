@@ -4,11 +4,10 @@
 
 module Web.BIR.BIR11.Types.Search where
 
-import Control.Lens.TH ( makeLenses )
-import Data.Aeson.TH ( defaultOptions, Options(fieldLabelModifier), deriveJSON )
 import Data.Text (Text)
 import GHC.Generics (Generic)
 
+import Web.BIR.BIR11.TH ( deriveAll )
 import Web.BIR.BIR11.Types.Common (Regon, Nip, EntityType, EntitySilo)
 import Web.BIR.BIR11.Xml (Bir11FromXml)
 
@@ -52,5 +51,4 @@ data SearchResult = SearchResult
   } deriving (Eq, Show, Generic, Bir11FromXml)
 
 
-$(makeLenses ''SearchResult)
-$(deriveJSON defaultOptions{fieldLabelModifier = drop 1} ''SearchResult)
+$(deriveAll ''SearchResult)

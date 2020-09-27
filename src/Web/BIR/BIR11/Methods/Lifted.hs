@@ -7,14 +7,13 @@
 
 module Web.BIR.BIR11.Methods.Lifted where
 
-import Control.Lens.TH
 import Control.Monad.Except (MonadIO(..), MonadError(throwError), liftEither)
 import Data.Aeson (ToJSON)
-import Data.Aeson.TH
 import Data.Text (Text)
 import GHC.Generics (Generic)
 
 import qualified Web.BIR.BIR11.Methods as M
+import Web.BIR.BIR11.TH
 import Web.BIR.BIR11.Types
 import Web.BIR.BIR11.Types.Report
 import Web.BIR.BIR11.Types.Report.Bir11OsPrawna ( Bir11OsPrawna )
@@ -111,5 +110,4 @@ searchDetailed params = do
         Nothing -> throwError $ Bir11ProtocolError "Unexpected Regon value: failed to convert value to Regon9 or Regon14"
         Just r -> pure r
 
-$(makeLenses ''DetailedResult)
-$(deriveToJSON defaultOptions{fieldLabelModifier = drop 15} ''DetailedResult)
+$(deriveAllPrefixed ''DetailedResult)
