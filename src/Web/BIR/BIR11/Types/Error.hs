@@ -3,6 +3,7 @@
 
 module Web.BIR.BIR11.Types.Error where
 
+import Control.Exception (Exception)
 import Data.Aeson (FromJSON, ToJSON)
 import Data.Text (Text)
 import GHC.Generics (Generic)
@@ -25,4 +26,5 @@ data Bir11ApiErrorMsg = Bir11ApiErrorMsg
 data Bir11Error
   = Bir11ProtocolError String
   | Bir11ApiError Bir11ApiErrorMsg
-  deriving (Eq, Show, Generic, FromJSON, ToJSON)
+  deriving (Eq, Show, Generic, Exception, FromJSON, ToJSON)
+

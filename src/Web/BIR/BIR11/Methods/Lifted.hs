@@ -7,13 +7,14 @@
 
 module Web.BIR.BIR11.Methods.Lifted where
 
-import Control.Monad.Except (MonadIO(..), MonadError(throwError), liftEither)
+import Control.Monad.IO.Unlift (MonadUnliftIO)
+import qualified UnliftIO.Exception as UnliftIO
 import Data.Aeson (ToJSON)
 import Data.Text (Text)
 import GHC.Generics (Generic)
 
 import qualified Web.BIR.BIR11.Methods as M
-import Web.BIR.BIR11.TH
+import Web.BIR.BIR11.TH ( deriveAllPrefixed )
 import Web.BIR.BIR11.Types
 import Web.BIR.BIR11.Types.Report
 import Web.BIR.BIR11.Types.Report.Bir11OsPrawna ( Bir11OsPrawna )
@@ -42,39 +43,46 @@ class HasBirState m where
   getBirSessionKey :: m SessionKey
   putBirSessionKey :: SessionKey -> m ()
 
-type MonadBir m = (MonadIO m, MonadError Bir11Error m, HasBirState m)
+type MonadBir m = (MonadUnliftIO m, HasBirState m)
 
 
 login :: MonadBir m => m ()
 login = do
   url <- getBirApiUrl
   key <- getBirApiKey
-  skey <- liftEither =<< liftIO (M.login url key)
+  skey <- UnliftIO.fromEitherIO $ M.login url key
   putBirSessionKey skey
 
 search :: MonadBir m => SearchParams -> m [SearchResult]
 search params = do
   url <- getBirApiUrl
   skey <- getBirSessionKey
-  liftEither =<< liftIO (M.search url skey params)
+  UnliftIO.fromEitherIO $ M.search url skey params
 
 fullReport :: (MonadBir m, Bir11FromXmlDoc a) => Bir11FullReport a -> m a
 fullReport report = do
   url <- getBirApiUrl
   skey <- getBirSessionKey
-  liftEither =<< liftIO (M.fullReport url skey report)
+  UnliftIO.fromEitherIO $ M.fullReport url skey report
 
 getValue :: MonadBir m => Bir11ParamName -> m Text
 getValue param = do
   url <- getBirApiUrl
   skey <- getBirSessionKey
-  liftEither =<< liftIO (M.getValue url skey param)
+  UnliftIO.fromEitherIO $ M.getValue url skey param
 
 logout :: MonadBir m => m Bool
 logout = do
   url <- getBirApiUrl
   skey <- getBirSessionKey
-  liftEither =<< liftIO (M.logout url skey)
+  UnliftIO.fromEitherIO $ M.logout url skey
+
+withSession :: MonadBir m => m a -> m a
+withSession ma =
+  UnliftIO.bracket
+    login
+    (const logout)
+    (const ma)
 
 searchDetailed :: forall m. (MonadBir m) => SearchParams -> m (Maybe DetailedResult)
 searchDetailed params = do
@@ -99,7 +107,7 @@ searchDetailed params = do
           reg <- getRegon14 x
           r <- fullReport (Bir11FrJednLokalnaOsPrawnej reg)
           pure $ Just $ DetailedResult x $ DetailedReportLP r
-        Nothing -> throwError $ Bir11ProtocolError "Entity type is missing"
+        Nothing -> UnliftIO.throwIO $ Bir11ProtocolError "Entity type is missing"
   where
     getRegon9 = getRegonWith toRegon9
     getRegon14 = getRegonWith toRegon14
@@ -107,7 +115,7 @@ searchDetailed params = do
     getRegonWith :: (Regon -> Maybe a) -> SearchResult -> m a
     getRegonWith f x =
       case _regon x >>= f of
-        Nothing -> throwError $ Bir11ProtocolError "Unexpected Regon value: failed to convert value to Regon9 or Regon14"
+        Nothing -> UnliftIO.throwIO $ Bir11ProtocolError "Unexpected Regon value: failed to convert value to Regon9 or Regon14"
         Just r -> pure r
 
 $(deriveAllPrefixed ''DetailedResult)

@@ -66,12 +66,13 @@ library
     , containers
     , http-client
     , lens
-    , monad-control
     , mtl
     , Only
     , text
     , template-haskell
     , time
+    , unliftio
+    , unliftio-core
     , wreq
     , xml-conduit
     , xml-conduit-writer

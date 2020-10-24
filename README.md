@@ -9,7 +9,7 @@ This library provides two interfaces:
 * Web.BIR.BIR11.Methods - IO
 * Web.BIR.BIR11.Methods.Lifted - lifted
 
-For the lifted interface you will need to instantiate `HasBirState` and provide both `MonadIO` and `MonadError Bir11Error`:
+For the lifted interface you will need to instantiate `HasBirState` and provide both `MonadUnliftIO`:
 
 ```
 class HasBirState m where
@@ -18,7 +18,7 @@ class HasBirState m where
   getBirSessionKey :: m SessionKey
   putBirSessionKey :: SessionKey -> m ()
 
-type MonadBir m = (MonadIO m, MonadError Bir11Error m, HasBirState m)
+type MonadBir m = (MonadUnliftIO m, HasBirState m)
 ```
 
 ## Tests
