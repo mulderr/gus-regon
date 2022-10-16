@@ -9,11 +9,11 @@ This library provides two interfaces:
 * Web.BIR.BIR11.Methods - IO
 * Web.BIR.BIR11.Methods.Lifted - lifted
 
-For the lifted interface you will need to instantiate `HasBirState` and provide both `MonadUnliftIO`:
+Lifted interface requires `HasBirState`:
 
 ```
 class HasBirState m where
-  getBirApiUrl :: m String
+  getBirApiUrl :: m Text
   getBirApiKey :: m ApiKey
   getBirSessionKey :: m SessionKey
   putBirSessionKey :: SessionKey -> m ()
@@ -27,8 +27,8 @@ Test suite contains basic tests against the non-production version of the API.
 
 To run the test suite:
 ```
-nix-shell
-cabal v2-test
+nix develop
+cabal test
 ```
 
 ## License

@@ -1,6 +1,3 @@
-{-# language DeriveGeneric #-}
-{-# language DeriveAnyClass #-}
-
 module Web.BIR.BIR11.Types.Error where
 
 import Control.Exception (Exception)
@@ -21,10 +18,12 @@ data Bir11ApiErrorMsg = Bir11ApiErrorMsg
   { errorCode :: Text
   , errorMessagePl :: Text
   , errorMessageEn :: Text
-  } deriving (Eq, Show, Generic, Bir11FromXml, Bir11FromXmlDoc, FromJSON, ToJSON)
+  } deriving stock (Eq, Show, Generic)
+    deriving anyclass (Bir11FromXml, Bir11FromXmlDoc, FromJSON, ToJSON)
 
 data Bir11Error
-  = Bir11ProtocolError String
+  = Bir11ProtocolError Text
   | Bir11ApiError Bir11ApiErrorMsg
-  deriving (Eq, Show, Generic, Exception, FromJSON, ToJSON)
+  deriving stock (Eq, Show, Generic)
+  deriving anyclass (FromJSON, ToJSON, Exception)
 

@@ -4,16 +4,17 @@
 module Web.BIR.BIR11.Parse where
 
 import Control.Applicative ((<|>))
+import Data.Attoparsec.ByteString.Char8 qualified as A
+import Data.ByteString qualified as B
+import Data.ByteString.Builder qualified as B
+import Data.ByteString.Lazy qualified as BL
+import Data.ByteString.Char8 qualified as B8
 import Data.Char (isAsciiLower, isAsciiUpper, isDigit, isPrint)
 import Data.Map (Map)
+import Data.Map qualified as Map
+import Data.Text (Text)
+import Data.Text qualified as T
 import Text.XML (parseLBS, def, Document)
-
-import qualified Data.Attoparsec.ByteString.Char8 as A
-import qualified Data.ByteString as B
-import qualified Data.ByteString.Builder as B
-import qualified Data.ByteString.Lazy as BL
-import qualified Data.ByteString.Char8 as B8
-import qualified Data.Map as Map
 
 
 -- https://tools.ietf.org/html/rfc7230#section-3.2.6
@@ -131,24 +132,24 @@ mrelPartBody boundary = do
 processMprHeadXml
   :: B.ByteString -- ^ multipart boundry string
   -> B.ByteString -- ^ response body
-  -> Either String Document
+  -> Either Text Document
 processMprHeadXml boundary wholeBody = do
   case A.parseOnly (mrelBody boundary) wholeBody of
     Right [(_headers, body)] -> do
       case parseLBS def $ BL.fromStrict body of
         Left err ->
-          Left $ show err
+          Left . T.pack . show $ err
         Right doc ->
           Right doc
     Right _ -> do
       Left "error: response has zero or multiple parts, expected exactly one"
     Left err -> do
-      Left $ "error: " <> err
+      Left $ "error: " <> T.pack err
 
 simpleParse
   :: B.ByteString -- ^ raw Content-Type header value
   -> B.ByteString -- ^ reponse body
-  -> Either String Document
+  -> Either Text Document
 simpleParse ctype body =
   case parseContentType ctype of
     Right ("multipart/related", ps) -> do
@@ -158,9 +159,9 @@ simpleParse ctype body =
         Nothing -> do
           Left "error: could not parse Content-Type parameters"
     Right (x, _) -> do
-      Left $ "error: unexpected Content-Type, wanted multipart/related, got: " <> show x
+      Left $ "error: unexpected Content-Type, wanted multipart/related, got: " <> T.pack (show x)
     Left err -> do
-      Left $ "error: " <> err
+      Left $ "error: " <> T.pack err
   where
     getCtParams m = do
       t <- Map.lookup "type" m

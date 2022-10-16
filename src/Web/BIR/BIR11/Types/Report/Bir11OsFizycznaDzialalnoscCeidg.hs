@@ -1,7 +1,3 @@
-{-# language DeriveAnyClass #-}
-{-# language DerivingStrategies #-}
-{-# language DeriveGeneric #-}
-
 module Web.BIR.BIR11.Types.Report.Bir11OsFizycznaDzialalnoscCeidg where
 
 import Data.Aeson (ToJSON)
@@ -58,5 +54,5 @@ data Bir11OsFizycznaDzialalnoscCeidg = Bir11OsFizycznaDzialalnoscCeidg
   , fizC_RodzajRejestru_Symbol :: Maybe Text
   , fizC_RodzajRejestru_Nazwa :: Maybe Text
   , fizC_NiePodjetoDzialalnosci :: Maybe Bool
-  } deriving (Eq, Show, Generic)
+  } deriving stock (Eq, Show, Generic)
     deriving anyclass (Bir11FromXml, Bir11FromXmlDoc, ToJSON)

@@ -1,27 +1,40 @@
-{-# language DeriveGeneric #-}
-{-# language DerivingVia #-}
-
 module Web.BIR.BIR11.Types.Common where
 
-import Control.Applicative ( Alternative((<|>)) ) 
 import GHC.Generics ( Generic )
-import Data.Text (Text)
 import Data.Aeson (withText, withScientific, FromJSON(..), ToJSON(..), Value(..))
 import Data.Aeson.Types (parseFail)
-
-import qualified Data.Text as T
+import Data.Text (Text)
+import Data.Text qualified as T
 
 import Web.BIR.BIR11.Xml
 
 
-newtype ApiKey = ApiKey { unApiKey :: Text } deriving (Eq, Show)
-newtype SessionKey = SessionKey { unSessionKey :: Text } deriving (Eq, Show)
+newtype ApiKey = ApiKey { unApiKey :: Text }
+  deriving stock (Eq, Show)
 
-newtype Regon = Regon { unRegon :: Text } deriving (Eq, Show, Generic) deriving (FromJSON, ToJSON) via Text
-newtype Regon9 = Regon9 { unRegon9 :: Text } deriving (Eq, Show, Generic) deriving (FromJSON, ToJSON) via Text
-newtype Regon14 = Regon14 { unRegon14 :: Text } deriving (Eq, Show, Generic) deriving (FromJSON, ToJSON) via Text
-newtype Nip = Nip { unNip :: Text } deriving (Eq, Show) deriving (FromJSON, ToJSON) via Text
-newtype Krs = Krs { unKrs :: Text } deriving (Eq, Show, Generic) deriving (FromJSON, ToJSON) via Text
+newtype SessionKey = SessionKey { unSessionKey :: Text }
+  deriving stock (Eq, Show)
+
+newtype Regon = Regon { unRegon :: Text }
+  deriving stock (Eq, Show, Generic)
+  deriving (FromJSON, ToJSON) via Text
+
+newtype Regon9 = Regon9 { unRegon9 :: Text }
+  deriving stock (Eq, Show, Generic)
+  deriving (FromJSON, ToJSON) via Text
+
+newtype Regon14 = Regon14 { unRegon14 :: Text }
+  deriving stock (Eq, Show, Generic)
+  deriving (FromJSON, ToJSON) via Text
+
+newtype Nip = Nip { unNip :: Text }
+  deriving stock (Eq, Show)
+  deriving (FromJSON, ToJSON) via Text
+
+newtype Krs = Krs { unKrs :: Text }
+  deriving stock (Eq, Show, Generic)
+  deriving (FromJSON, ToJSON) via Text
+
 
 toRegon9 :: Regon -> Maybe Regon9
 toRegon9 (Regon r) =
@@ -36,10 +49,10 @@ toRegon14 (Regon r) =
   else Nothing
 
 fromRegon9 :: Regon9 -> Regon
-fromRegon9 = Regon . unRegon9
+fromRegon9 = Regon . (.unRegon9)
 
 fromRegon14 :: Regon14 -> Regon
-fromRegon14 = Regon . unRegon14
+fromRegon14 = Regon . (.unRegon14)
 
 
 -- | ParametryWyszukiwania
@@ -53,17 +66,18 @@ data SearchParams
   | SearchParamsRegon14Multi [Regon14]
   | SearchParamsNipMulti [Nip]
   | SearchParamsKrsMulti [Krs] 
-  deriving (Eq, Show)
+  deriving stock (Eq, Show, Generic)
+  deriving anyclass (FromJSON, ToJSON)
 
 searchParamsToParams :: SearchParams -> (Text, Text)
 searchParamsToParams = \case
-  SearchParamsRegon v -> ("Regon", unRegon v)
-  SearchParamsNip v -> ("Nip", unNip v)
-  SearchParamsKrs v -> ("Krs", unKrs v)
-  SearchParamsRegon9Multi vs -> ("Regony9zn", T.intercalate "," $ map unRegon9 vs)
-  SearchParamsRegon14Multi vs -> ("Regony14zn", T.intercalate "," $ map unRegon14 vs)
-  SearchParamsNipMulti vs -> ("Nipy", T.intercalate "," $ map unNip vs)
-  SearchParamsKrsMulti vs -> ("Krsy", T.intercalate "," $ map unKrs vs)
+  SearchParamsRegon v -> ("Regon", v.unRegon)
+  SearchParamsNip v -> ("Nip", v.unNip)
+  SearchParamsKrs v -> ("Krs", v.unKrs)
+  SearchParamsRegon9Multi vs -> ("Regony9zn", T.intercalate "," $ map (.unRegon9) vs)
+  SearchParamsRegon14Multi vs -> ("Regony14zn", T.intercalate "," $ map (.unRegon14) vs)
+  SearchParamsNipMulti vs -> ("Nipy", T.intercalate "," $ map (.unNip) vs)
+  SearchParamsKrsMulti vs -> ("Krsy", T.intercalate "," $ map (.unKrs) vs)
 
 data EntityType
   = EntityTypeP
@@ -153,32 +167,34 @@ paramNameToText = T.pack . show
 
 instance Bir11FromText Regon where
   bir11FromText x =
-        fromRegon9 <$> bir11FromText @Regon9 x
-    <|> fromRegon14 <$> bir11FromText @Regon14 x
+    r9 <> r14 -- see: Semigroup (Either a b)
+    where
+      r9 = fromRegon9 <$> bir11FromText @Regon9 x 
+      r14 = fromRegon14 <$> bir11FromText @Regon14 x
 
 instance Bir11FromText Regon9 where
   bir11FromText x | T.length x == 9 = Right $ Regon9 x
-  bir11FromText x = Left $ "failed to read Regon9 from: " <> T.unpack x
+  bir11FromText x = Left $ "failed to read Regon9 from: " <> x
 
 instance Bir11FromText Regon14 where
   bir11FromText x | T.length x == 14 = Right $ Regon14 x
-  bir11FromText x = Left $ "failed to read Regon14 from: " <> T.unpack x
+  bir11FromText x = Left $ "failed to read Regon14 from: " <> x
 
 instance Bir11FromText Nip where
   bir11FromText x | T.length x == 10 = Right $ Nip x
-  bir11FromText x = Left $ "failed to read Nip from: " <> T.unpack x
+  bir11FromText x = Left $ "failed to read Nip from: " <> x
 
 instance Bir11FromText Krs where
   bir11FromText x | T.length x == 10 = Right $ Krs x
-  bir11FromText x = Left $ "failed to read Krs from: " <> T.unpack x
+  bir11FromText x = Left $ "failed to read Krs from: " <> x
 
 instance Bir11FromText EntityType where
   bir11FromText x = case entityTypeFromText x of
     Just t -> Right t
-    Nothing -> Left $ "failed to read EntityType form: " <> T.unpack x
+    Nothing -> Left $ "failed to read EntityType form: " <> x
 
 instance Bir11FromText EntitySilo where
   bir11FromText x = case entitySiloFromText x of
     Just s -> Right s
-    Nothing -> Left $ "failed to read EntitySilo from: " <> T.unpack x
+    Nothing -> Left $ "failed to read EntitySilo from: " <> x
 

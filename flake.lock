@@ -1,0 +1,40 @@
+{
+  "nodes": {
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1665763903,
+        "narHash": "sha256-znGWY4x688cZ3Ii01qLnhl+mSKpQ9iCufGxfdV6oBOc=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "78a37aa630faa41944060a966607d4f1128ea94b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-22.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "nixpkgs": "nixpkgs",
+        "xml-lens-src": "xml-lens-src"
+      }
+    },
+    "xml-lens-src": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-QY37NfURZuYzlrXTIRxcU0IlBUCHBrdJ7bbqJto334g=",
+        "type": "tarball",
+        "url": "https://hackage.haskell.org/package/xml-lens-0.3.1/xml-lens-0.3.1.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://hackage.haskell.org/package/xml-lens-0.3.1/xml-lens-0.3.1.tar.gz"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}

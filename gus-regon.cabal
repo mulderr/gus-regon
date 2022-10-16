@@ -1,7 +1,7 @@
-cabal-version:       >=1.10
+cabal-version:       3.0
 
 name:                gus-regon
-version:             0.1.0.0
+version:             0.2.0.0
 synopsis:            GUS REGON API client
 description:         
   Haskell client for GUS REGON (BIR 1.1) API
@@ -20,21 +20,38 @@ extra-source-files:
   CHANGELOG.md
   tests/*.hs
 
+common common-extensions
+  default-extensions:
+      ConstraintKinds
+    , DefaultSignatures
+    , DeriveAnyClass
+    , DeriveGeneric
+    , DerivingStrategies
+    , DerivingVia
+    , FlexibleContexts
+    , FlexibleInstances
+    , GADTs
+    , ImportQualifiedPost
+    , KindSignatures
+    , LambdaCase
+    , NoFieldSelectors
+    , OverloadedStrings
+    , OverloadedLabels
+    , OverloadedRecordDot
+    , ScopedTypeVariables
+    , TypeApplications
+    , TypeOperators
+
 library
+  import: common-extensions
   default-language:  Haskell2010
   hs-source-dirs:    src
   ghc-options:       -Wall -O2
-  default-extensions:
-      LambdaCase
-      OverloadedStrings
-      ScopedTypeVariables
-      TypeApplications
   exposed-modules:
       Web.BIR.BIR11.Methods
     , Web.BIR.BIR11.Methods.Lifted
     , Web.BIR.BIR11.Parse
     , Web.BIR.BIR11.Soap
-    , Web.BIR.BIR11.TH
     , Web.BIR.BIR11.Types
     , Web.BIR.BIR11.Types.Common
     , Web.BIR.BIR11.Types.Error
@@ -79,6 +96,7 @@ library
     , xml-lens
 
 test-suite test
+  import: common-extensions
   default-language: Haskell2010
   type: exitcode-stdio-1.0
   hs-source-dirs: tests

@@ -1,20 +1,12 @@
-{-# language ConstraintKinds #-}
-{-# language DeriveGeneric #-}
-{-# language FlexibleContexts #-}
-{-# language DeriveAnyClass #-}
-{-# language ScopedTypeVariables #-}
-{-# language TemplateHaskell #-}
-
 module Web.BIR.BIR11.Methods.Lifted where
 
 import Control.Monad.IO.Unlift (MonadUnliftIO)
-import qualified UnliftIO.Exception as UnliftIO
+import UnliftIO.Exception qualified as UnliftIO
 import Data.Aeson (ToJSON)
 import Data.Text (Text)
 import GHC.Generics (Generic)
 
-import qualified Web.BIR.BIR11.Methods as M
-import Web.BIR.BIR11.TH ( deriveAllPrefixed )
+import Web.BIR.BIR11.Methods qualified as M
 import Web.BIR.BIR11.Types
 import Web.BIR.BIR11.Types.Report
 import Web.BIR.BIR11.Types.Report.Bir11OsPrawna ( Bir11OsPrawna )
@@ -29,16 +21,18 @@ data DetailedReport
   | DetailedReportF Bir11OsFizycznaDaneOgolne
   | DetailedReportLP Bir11JednLokalnaOsPrawnej
   | DetailedReportLF Bir11JednLokalnaOsFizycznej
-  deriving (Eq, Show, Generic, ToJSON)
+  deriving stock (Eq, Show, Generic)
+  deriving anyclass (ToJSON)
 
 data DetailedResult = DetailedResult
-  { _detailedResultSearch :: SearchResult
-  , _detailedResultReport :: DetailedReport
-  } deriving (Eq, Show, Generic)
+  { searchresult :: SearchResult
+  , detailedreport :: DetailedReport
+  } deriving stock (Eq, Show, Generic)
+    deriving anyclass (ToJSON)
 
 
 class HasBirState m where
-  getBirApiUrl :: m String
+  getBirApiUrl :: m Text
   getBirApiKey :: m ApiKey
   getBirSessionKey :: m SessionKey
   putBirSessionKey :: SessionKey -> m ()
@@ -90,7 +84,7 @@ searchDetailed params = do
   case rs of
     [] -> pure Nothing
     (x:_) -> do
-      case _typ x of
+      case x.typ of
         Just EntityTypeF -> do
           reg <- getRegon9 x
           r <- fullReport (Bir11FrOsFizycznaDaneOgolne reg)
@@ -114,8 +108,6 @@ searchDetailed params = do
 
     getRegonWith :: (Regon -> Maybe a) -> SearchResult -> m a
     getRegonWith f x =
-      case _regon x >>= f of
+      case x.regon >>= f of
         Nothing -> UnliftIO.throwIO $ Bir11ProtocolError "Unexpected Regon value: failed to convert value to Regon9 or Regon14"
         Just r -> pure r
-
-$(deriveAllPrefixed ''DetailedResult)

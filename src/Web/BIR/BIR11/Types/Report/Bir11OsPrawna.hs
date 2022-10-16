@@ -1,7 +1,3 @@
-{-# language DeriveAnyClass #-}
-{-# language DerivingStrategies #-}
-{-# language DeriveGeneric #-}
-
 module Web.BIR.BIR11.Types.Report.Bir11OsPrawna where
 
 import Data.Aeson (ToJSON)
@@ -69,5 +65,5 @@ data Bir11OsPrawna = Bir11OsPrawna
   , praw_organRejestrowy_Nazwa :: Maybe Text
   , praw_rodzajRejestruEwidencji_Nazwa :: Maybe Text
   , praw_liczbaJednLokalnych :: Maybe Int
-  } deriving (Eq, Show, Generic)
+  } deriving stock (Eq, Show, Generic)
     deriving anyclass (Bir11FromXml, Bir11FromXmlDoc, ToJSON)

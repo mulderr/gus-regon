@@ -1,6 +1,3 @@
-{-# language GADTs #-}
-{-# language KindSignatures #-}
-
 module Web.BIR.BIR11.Types.Report where
 
 import Data.Kind (Type)
@@ -46,19 +43,19 @@ data Bir11FullReport :: Type -> Type where
 
 bir11FullReportToParams :: Bir11FullReport a -> (Text, Text)
 bir11FullReportToParams = \case
-  Bir11FrJednLokalnaOsFizycznej r14 -> ("BIR11JednLokalnaOsFizycznej", unRegon14 r14)
-  Bir11FrJednLokalnaOsFizycznejPkd r14 -> ("BIR11JednLokalnaOsFizycznejPkd", unRegon14 r14)
-  Bir11FrJednLokalnaOsPrawnej r14 -> ("BIR11JednLokalnaOsPrawnej", unRegon14 r14)
-  Bir11FrJednLokalnaOsPrawnejPkd r14 -> ("BIR11JednLokalnaOsPrawnejPkd", unRegon14 r14)
-  Bir11FrOsFizycznaDaneOgolne r9 -> ("BIR11OsFizycznaDaneOgolne", unRegon9 r9)
-  Bir11FrOsFizycznaDzialalnoscCeidg r9 -> ("BIR11OsFizycznaDzialalnoscCeidg", unRegon9 r9)
-  Bir11FrOsFizycznaDzialalnoscPozostala r9 -> ("BIR11OsFizycznaDzialalnoscPozostala", unRegon9 r9)
-  Bir11FrOsFizycznaDzialalnoscRolnicza r9 -> ("BIR11OsFizycznaDzialalnoscRolnicza", unRegon9 r9)
-  Bir11FrOsFizycznaDzialalnoscSkreslonaDo20141108 r9 -> ("BIR11OsFizycznaDzialalnoscSkreslonaDo20141108", unRegon9 r9)
-  Bir11FrOsFizycznaListaJednLokalnych r9 -> ("BIR11OsFizycznaListaJednLokalnych", unRegon9 r9)
-  Bir11FrOsFizycznaPkd r9 -> ("BIR11OsFizycznaPkd", unRegon9 r9)
-  Bir11FrOsPrawna r9 -> ("BIR11OsPrawna", unRegon9 r9)
-  Bir11FrOsPrawnaListaJednLokalnych r9 -> ("BIR11OsPrawnaListaJednLokalnych", unRegon9 r9)
-  Bir11FrOsPrawnaPkd r9 -> ("BIR11OsPrawnaPkd", unRegon9 r9)
-  Bir11FrOsPrawnaSpCywilnaWspolnicy r9 -> ("BIR11OsPrawnaSpCywilnaWspolnicy", unRegon9 r9)
-  Bir11FrTypPodmiotu r -> ("BIR11TypPodmiotu", unRegon r)
+  Bir11FrJednLokalnaOsFizycznej r14 -> ("BIR11JednLokalnaOsFizycznej", r14.unRegon14)
+  Bir11FrJednLokalnaOsFizycznejPkd r14 -> ("BIR11JednLokalnaOsFizycznejPkd", r14.unRegon14)
+  Bir11FrJednLokalnaOsPrawnej r14 -> ("BIR11JednLokalnaOsPrawnej", r14.unRegon14)
+  Bir11FrJednLokalnaOsPrawnejPkd r14 -> ("BIR11JednLokalnaOsPrawnejPkd", r14.unRegon14)
+  Bir11FrOsFizycznaDaneOgolne r9 -> ("BIR11OsFizycznaDaneOgolne", r9.unRegon9)
+  Bir11FrOsFizycznaDzialalnoscCeidg r9 -> ("BIR11OsFizycznaDzialalnoscCeidg", r9.unRegon9)
+  Bir11FrOsFizycznaDzialalnoscPozostala r9 -> ("BIR11OsFizycznaDzialalnoscPozostala", r9.unRegon9)
+  Bir11FrOsFizycznaDzialalnoscRolnicza r9 -> ("BIR11OsFizycznaDzialalnoscRolnicza", r9.unRegon9)
+  Bir11FrOsFizycznaDzialalnoscSkreslonaDo20141108 r9 -> ("BIR11OsFizycznaDzialalnoscSkreslonaDo20141108", r9.unRegon9)
+  Bir11FrOsFizycznaListaJednLokalnych r9 -> ("BIR11OsFizycznaListaJednLokalnych", r9.unRegon9)
+  Bir11FrOsFizycznaPkd r9 -> ("BIR11OsFizycznaPkd", r9.unRegon9)
+  Bir11FrOsPrawna r9 -> ("BIR11OsPrawna", r9.unRegon9)
+  Bir11FrOsPrawnaListaJednLokalnych r9 -> ("BIR11OsPrawnaListaJednLokalnych", r9.unRegon9)
+  Bir11FrOsPrawnaPkd r9 -> ("BIR11OsPrawnaPkd", r9.unRegon9)
+  Bir11FrOsPrawnaSpCywilnaWspolnicy r9 -> ("BIR11OsPrawnaSpCywilnaWspolnicy", r9.unRegon9)
+  Bir11FrTypPodmiotu r -> ("BIR11TypPodmiotu", r.unRegon)

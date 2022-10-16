@@ -1,7 +1,4 @@
-{-# language OverloadedStrings #-}
-
 module Main where
-
 import Control.Lens
 import Data.Time.Calendar (Day)
 import Data.Time.Format (parseTimeOrError, defaultTimeLocale)
@@ -16,7 +13,7 @@ import Web.BIR.BIR11.Types.Report.Bir11OsPrawna
 import Web.BIR.BIR11.Xml (Bir11FromXmlDoc)
 
 
-url :: String
+url :: Text
 url = "https://wyszukiwarkaregontest.stat.gov.pl/wsBIR/UslugaBIRzewnPubl.svc"
 
 key :: ApiKey
@@ -56,74 +53,74 @@ assertSearchEquals ps expected = do
 
 testSearchRegon :: IO ()
 testSearchRegon = do
-  assertSearchEquals (SearchParamsRegon regon_) [expected]
+  assertSearchEquals (SearchParamsRegon regon) [expected]
   where
-    regon_ = Regon "000331501"
+    regon = Regon "000331501"
     expected = SearchResult
-      { _regon = Just regon_
-      , _nip = Just $ Nip "5261040828"
-      , _statusNip = Nothing
-      , _nazwa = Just "GŁÓWNY URZĄD STATYSTYCZNY"
-      , _wojewodztwo = Just "MAZOWIECKIE"
-      , _powiat = Just "m. st. Warszawa"
-      , _gmina = Just "Śródmieście"
-      , _miejscowosc = Just "Warszawa"
-      , _kodPocztowy = Just "00-925"
-      , _ulica = Just "ul. Test-Krucza"
-      , _nrNieruchomosci = Just "208"
-      , _nrLokalu = Nothing
-      , _typ = Just EntityTypeP
-      , _silosId = Just EntitySilo6
-      , _dataZakonczeniaDzialalnosci = Nothing
-      , _miejscowoscPoczty = Just "Warszawa"
+      { regon = Just regon
+      , nip = Just $ Nip "5261040828"
+      , statusNip = Nothing
+      , nazwa = Just "GŁÓWNY URZĄD STATYSTYCZNY"
+      , wojewodztwo = Just "MAZOWIECKIE"
+      , powiat = Just "m. st. Warszawa"
+      , gmina = Just "Śródmieście"
+      , miejscowosc = Just "Warszawa"
+      , kodPocztowy = Just "00-925"
+      , ulica = Just "ul. Test-Krucza"
+      , nrNieruchomosci = Just "208"
+      , nrLokalu = Nothing
+      , typ = Just EntityTypeP
+      , silosId = Just EntitySilo6
+      , dataZakonczeniaDzialalnosci = Nothing
+      , miejscowoscPoczty = Just "Warszawa"
       }
 
 testSearchNip :: IO ()
 testSearchNip = do
-  assertSearchEquals (SearchParamsNip nip_) [expected]
+  assertSearchEquals (SearchParamsNip nip) [expected]
   where
-    nip_ = Nip "5220002529"
+    nip = Nip "5220002529"
     expected = SearchResult
-      { _regon = Just $ Regon "000288975"
-      , _nip = Just nip_
-      , _statusNip = Nothing
-      , _nazwa = Just "SAMODZIELNY PUBLICZNY CENTRALNY SZPITAL KLINICZNY W WARSZAWIE"
-      , _wojewodztwo = Just "MAZOWIECKIE"
-      , _powiat = Just "m. st. Warszawa"
-      , _gmina = Just "Ochota"
-      , _miejscowosc = Just "Warszawa"
-      , _kodPocztowy = Just "02-097"
-      , _ulica = Just "ul. Test-Krucza"
-      , _nrNieruchomosci = Just "1A"
-      , _nrLokalu = Nothing
-      , _typ = Just EntityTypeP
-      , _silosId = Just EntitySilo6
-      , _dataZakonczeniaDzialalnosci = Nothing
-      , _miejscowoscPoczty = Just "Warszawa"
+      { regon = Just $ Regon "000288975"
+      , nip = Just nip
+      , statusNip = Nothing
+      , nazwa = Just "SAMODZIELNY PUBLICZNY CENTRALNY SZPITAL KLINICZNY W WARSZAWIE"
+      , wojewodztwo = Just "MAZOWIECKIE"
+      , powiat = Just "m. st. Warszawa"
+      , gmina = Just "Ochota"
+      , miejscowosc = Just "Warszawa"
+      , kodPocztowy = Just "02-097"
+      , ulica = Just "ul. Test-Krucza"
+      , nrNieruchomosci = Just "1A"
+      , nrLokalu = Nothing
+      , typ = Just EntityTypeP
+      , silosId = Just EntitySilo6
+      , dataZakonczeniaDzialalnosci = Nothing
+      , miejscowoscPoczty = Just "Warszawa"
       }
 
 testSearchKrs :: IO ()
 testSearchKrs = do
-  assertSearchEquals (SearchParamsKrs krs_) [expected]
+  assertSearchEquals (SearchParamsKrs krs) [expected]
   where
-    krs_ = Krs "0000028860"
+    krs = Krs "0000028860"
     expected = SearchResult
-      { _regon = Just $ Regon "610188201"
-      , _nip = Just $ Nip "7740001454"
-      , _statusNip = Nothing
-      , _nazwa = Just "POLSKI KONCERN NAFTOWY ORLEN SPÓŁKA AKCYJNA"
-      , _wojewodztwo = Just "MAZOWIECKIE"
-      , _powiat = Just "m. Płock"
-      , _gmina = Just "M. Płock"
-      , _miejscowosc = Just "Płock"
-      , _kodPocztowy = Just "09-411"
-      , _ulica = Just "ul. Test-Wilcza"
-      , _nrNieruchomosci = Just "7"
-      , _nrLokalu = Nothing
-      , _typ = Just EntityTypeP
-      , _silosId = Just EntitySilo6
-      , _dataZakonczeniaDzialalnosci = Nothing
-      , _miejscowoscPoczty = Just "Płock"
+      { regon = Just $ Regon "610188201"
+      , nip = Just $ Nip "7740001454"
+      , statusNip = Nothing
+      , nazwa = Just "POLSKI KONCERN NAFTOWY ORLEN SPÓŁKA AKCYJNA"
+      , wojewodztwo = Just "MAZOWIECKIE"
+      , powiat = Just "m. Płock"
+      , gmina = Just "M. Płock"
+      , miejscowosc = Just "Płock"
+      , kodPocztowy = Just "09-411"
+      , ulica = Just "ul. Test-Wilcza"
+      , nrNieruchomosci = Just "7"
+      , nrLokalu = Nothing
+      , typ = Just EntityTypeP
+      , silosId = Just EntitySilo6
+      , dataZakonczeniaDzialalnosci = Nothing
+      , miejscowoscPoczty = Just "Płock"
       }
 
 testSearchWrong :: IO ()
@@ -147,61 +144,61 @@ testFullReport report = do
 testReportOsPrawna :: IO ()
 testReportOsPrawna = do
   Right x <- testFullReport (Bir11FrOsPrawna $ Regon9 "610188201")
-  praw_regon9 x @?= Just (Regon9 "610188201")
-  praw_nip x @?= Just (Nip "7740001454")
-  praw_statusNip x @?= Nothing
-  praw_nazwa x @?= Just "POLSKI KONCERN NAFTOWY ORLEN SPÓŁKA AKCYJNA"
-  praw_nazwaSkrocona x @?= Just "PKN ORLEN S.A."
-  praw_numerWRejestrzeEwidencji x @?= Just "0000028860"
-  praw_dataWpisuDoRejestruEwidencji x @?= Just (isoDay "2008-07-25")
-  praw_dataPowstania x @?= Just (isoDay "1993-07-01")
-  praw_dataRozpoczeciaDzialalnosci x @?= Just (isoDay "1993-07-01")
-  praw_dataWpisuDoRegon x @?= Nothing
-  praw_dataZawieszeniaDzialalnosci x @?= Nothing
-  praw_dataWznowieniaDzialalnosci x @?= Nothing
-  praw_dataZaistnieniaZmiany x @?= Just (isoDay "2013-08-28")
-  praw_dataZakonczeniaDzialalnosci x @?= Nothing
-  praw_dataSkresleniaZRegon x @?= Nothing
-  praw_dataOrzeczeniaOUpadlosci x @?= Nothing
-  praw_dataZakonczeniaPostepowaniaUpadlosciowego x @?= Nothing
-  praw_adSiedzKraj_Symbol x @?= Just "PL"
-  praw_adSiedzWojewodztwo_Symbol x @?= Just "14"
-  praw_adSiedzPowiat_Symbol x @?= Just "62"
-  praw_adSiedzGmina_Symbol x @?= Just "011"
-  praw_adSiedzKodPocztowy x @?= Just "09411"
-  praw_adSiedzMiejscowoscPoczty_Symbol x @?= Just "0968687"
-  praw_adSiedzMiejscowosc_Symbol x @?= Just "0968687"
-  praw_adSiedzUlica_Symbol x @?= Just "24261"
-  praw_adSiedzNumerNieruchomosci x @?= Just "7"
-  praw_adSiedzNumerLokalu x @?= Nothing
-  praw_adSiedzNietypoweMiejsceLokalizacji x @?= Nothing
-  praw_numerTelefonu x @?= Just "243655405"
-  praw_numerWewnetrznyTelefonu x @?= Nothing
-  praw_numerFaksu x @?= Just "243653157"
-  praw_adresEmail x @?= Nothing
-  praw_adresStronyinternetowej x @?= Nothing
-  praw_adSiedzKraj_Nazwa x @?= Just "POLSKA"
-  praw_adSiedzWojewodztwo_Nazwa x @?= Just "MAZOWIECKIE"
-  praw_adSiedzPowiat_Nazwa x @?= Just "m. Płock"
-  praw_adSiedzGmina_Nazwa x @?= Just "M. Płock"
-  praw_adSiedzMiejscowosc_Nazwa x @?= Just "Płock"
-  praw_adSiedzMiejscowoscPoczty_Nazwa x @?= Just "Płock"
-  praw_adSiedzUlica_Nazwa x @?= Just "ul. Test-Wilcza"
-  praw_podstawowaFormaPrawna_Symbol x @?= Just "1"
-  praw_szczegolnaFormaPrawna_Symbol x @?= Just "16"
-  praw_formaFinansowania_Symbol x @?= Just "1"
-  praw_formaWlasnosci_Symbol x @?= Just "234"
-  praw_organZalozycielski_Symbol x @?= Just "017000000"
-  praw_organRejestrowy_Symbol x @?= Just "071010060"
-  praw_rodzajRejestruEwidencji_Symbol x @?= Just "138"
-  praw_podstawowaFormaPrawna_Nazwa x @?= Just "OSOBA PRAWNA"
-  praw_szczegolnaFormaPrawna_Nazwa x @?= Just "SPÓŁKI AKCYJNE"
-  praw_formaFinansowania_Nazwa x @?= Just "JEDNOSTKA SAMOFINANSUJĄCA NIE BĘDĄCA JEDNOSTKĄ BUDŻETOWĄ LUB SAMORZĄDOWYM ZAKŁADEM BUDŻETOWYM"
-  praw_formaWlasnosci_Nazwa x @?= Just "WŁASNOŚĆ MIESZANA MIĘDZY SEKTORAMI Z PRZEWAGĄ WŁASNOŚCI SEKTORA PRYWATNEGO, W TYM Z PRZEWAGĄ WŁASNOŚCI KRAJOWYCH OSÓB FIZYCZNYCH"
-  praw_organZalozycielski_Nazwa x @?= Just "MINISTER SKARBU PAŃSTWA"
-  praw_organRejestrowy_Nazwa x @?= Just "SĄD REJONOWY DLA M.ST.WARSZAWY W WARSZAWIE,XIV WYDZIAŁ GOSPODARCZY KRAJOWEGO REJESTRU SĄDOWEGO"
-  praw_rodzajRejestruEwidencji_Nazwa x @?= Just "REJESTR PRZEDSIĘBIORCÓW"
-  praw_liczbaJednLokalnych x @?= Just 0
+  x.praw_regon9 @?= Just (Regon9 "610188201")
+  x.praw_nip @?= Just (Nip "7740001454")
+  x.praw_statusNip @?= Nothing
+  x.praw_nazwa @?= Just "POLSKI KONCERN NAFTOWY ORLEN SPÓŁKA AKCYJNA"
+  x.praw_nazwaSkrocona @?= Just "PKN ORLEN S.A."
+  x.praw_numerWRejestrzeEwidencji @?= Just "0000028860"
+  x.praw_dataWpisuDoRejestruEwidencji @?= Just (isoDay "2008-07-25")
+  x.praw_dataPowstania @?= Just (isoDay "1993-07-01")
+  x.praw_dataRozpoczeciaDzialalnosci @?= Just (isoDay "1993-07-01")
+  x.praw_dataWpisuDoRegon @?= Nothing
+  x.praw_dataZawieszeniaDzialalnosci @?= Nothing
+  x.praw_dataWznowieniaDzialalnosci @?= Nothing
+  x.praw_dataZaistnieniaZmiany @?= Just (isoDay "2013-08-28")
+  x.praw_dataZakonczeniaDzialalnosci @?= Nothing
+  x.praw_dataSkresleniaZRegon @?= Nothing
+  x.praw_dataOrzeczeniaOUpadlosci @?= Nothing
+  x.praw_dataZakonczeniaPostepowaniaUpadlosciowego @?= Nothing
+  x.praw_adSiedzKraj_Symbol @?= Just "PL"
+  x.praw_adSiedzWojewodztwo_Symbol @?= Just "14"
+  x.praw_adSiedzPowiat_Symbol @?= Just "62"
+  x.praw_adSiedzGmina_Symbol @?= Just "011"
+  x.praw_adSiedzKodPocztowy @?= Just "09411"
+  x.praw_adSiedzMiejscowoscPoczty_Symbol @?= Just "0968687"
+  x.praw_adSiedzMiejscowosc_Symbol @?= Just "0968687"
+  x.praw_adSiedzUlica_Symbol @?= Just "24261"
+  x.praw_adSiedzNumerNieruchomosci @?= Just "7"
+  x.praw_adSiedzNumerLokalu @?= Nothing
+  x.praw_adSiedzNietypoweMiejsceLokalizacji @?= Nothing
+  x.praw_numerTelefonu @?= Just "243655405"
+  x.praw_numerWewnetrznyTelefonu @?= Nothing
+  x.praw_numerFaksu @?= Just "243653157"
+  x.praw_adresEmail @?= Nothing
+  x.praw_adresStronyinternetowej @?= Nothing
+  x.praw_adSiedzKraj_Nazwa @?= Just "POLSKA"
+  x.praw_adSiedzWojewodztwo_Nazwa @?= Just "MAZOWIECKIE"
+  x.praw_adSiedzPowiat_Nazwa @?= Just "m. Płock"
+  x.praw_adSiedzGmina_Nazwa @?= Just "M. Płock"
+  x.praw_adSiedzMiejscowosc_Nazwa @?= Just "Płock"
+  x.praw_adSiedzMiejscowoscPoczty_Nazwa @?= Just "Płock"
+  x.praw_adSiedzUlica_Nazwa @?= Just "ul. Test-Wilcza"
+  x.praw_podstawowaFormaPrawna_Symbol @?= Just "1"
+  x.praw_szczegolnaFormaPrawna_Symbol @?= Just "16"
+  x.praw_formaFinansowania_Symbol @?= Just "1"
+  x.praw_formaWlasnosci_Symbol @?= Just "234"
+  x.praw_organZalozycielski_Symbol @?= Just "017000000"
+  x.praw_organRejestrowy_Symbol @?= Just "071010060"
+  x.praw_rodzajRejestruEwidencji_Symbol @?= Just "138"
+  x.praw_podstawowaFormaPrawna_Nazwa @?= Just "OSOBA PRAWNA"
+  x.praw_szczegolnaFormaPrawna_Nazwa @?= Just "SPÓŁKI AKCYJNE"
+  x.praw_formaFinansowania_Nazwa @?= Just "JEDNOSTKA SAMOFINANSUJĄCA NIE BĘDĄCA JEDNOSTKĄ BUDŻETOWĄ LUB SAMORZĄDOWYM ZAKŁADEM BUDŻETOWYM"
+  x.praw_formaWlasnosci_Nazwa @?= Just "WŁASNOŚĆ MIESZANA MIĘDZY SEKTORAMI Z PRZEWAGĄ WŁASNOŚCI SEKTORA PRYWATNEGO, W TYM Z PRZEWAGĄ WŁASNOŚCI KRAJOWYCH OSÓB FIZYCZNYCH"
+  x.praw_organZalozycielski_Nazwa @?= Just "MINISTER SKARBU PAŃSTWA"
+  x.praw_organRejestrowy_Nazwa @?= Just "SĄD REJONOWY DLA M.ST.WARSZAWY W WARSZAWIE,XIV WYDZIAŁ GOSPODARCZY KRAJOWEGO REJESTRU SĄDOWEGO"
+  x.praw_rodzajRejestruEwidencji_Nazwa @?= Just "REJESTR PRZEDSIĘBIORCÓW"
+  x.praw_liczbaJednLokalnych @?= Just 0
 
 isoDay :: String -> Day
 isoDay = parseTimeOrError False defaultTimeLocale "%Y-%m-%d"

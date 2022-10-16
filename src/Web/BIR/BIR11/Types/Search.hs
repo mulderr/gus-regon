@@ -1,13 +1,9 @@
-{-# language DeriveGeneric #-}
-{-# language DeriveAnyClass #-}
-{-# language TemplateHaskell #-}
-
 module Web.BIR.BIR11.Types.Search where
 
 import Data.Text (Text)
 import GHC.Generics (Generic)
+import Data.Aeson (ToJSON)
 
-import Web.BIR.BIR11.TH ( deriveAll )
 import Web.BIR.BIR11.Types.Common (Regon, Nip, EntityType, EntitySilo)
 import Web.BIR.BIR11.Xml (Bir11FromXml)
 
@@ -32,23 +28,21 @@ import Web.BIR.BIR11.Xml (Bir11FromXml)
 --   <MiejscowoscPoczty />
 -- </dane>
 data SearchResult = SearchResult
-  { _regon :: Maybe Regon
-  , _nip :: Maybe Nip
-  , _statusNip :: Maybe Text
-  , _nazwa :: Maybe Text
-  , _wojewodztwo :: Maybe Text
-  , _powiat :: Maybe Text
-  , _gmina :: Maybe Text
-  , _miejscowosc :: Maybe Text
-  , _kodPocztowy :: Maybe Text
-  , _ulica :: Maybe Text
-  , _nrNieruchomosci :: Maybe Text
-  , _nrLokalu :: Maybe Text
-  , _typ :: Maybe EntityType
-  , _silosId :: Maybe EntitySilo
-  , _dataZakonczeniaDzialalnosci :: Maybe Text
-  , _miejscowoscPoczty :: Maybe Text
-  } deriving (Eq, Show, Generic, Bir11FromXml)
-
-
-$(deriveAll ''SearchResult)
+  { regon :: Maybe Regon
+  , nip :: Maybe Nip
+  , statusNip :: Maybe Text
+  , nazwa :: Maybe Text
+  , wojewodztwo :: Maybe Text
+  , powiat :: Maybe Text
+  , gmina :: Maybe Text
+  , miejscowosc :: Maybe Text
+  , kodPocztowy :: Maybe Text
+  , ulica :: Maybe Text
+  , nrNieruchomosci :: Maybe Text
+  , nrLokalu :: Maybe Text
+  , typ :: Maybe EntityType
+  , silosId :: Maybe EntitySilo
+  , dataZakonczeniaDzialalnosci :: Maybe Text
+  , miejscowoscPoczty :: Maybe Text
+  } deriving stock (Eq, Show, Generic)
+    deriving anyclass (Bir11FromXml, ToJSON)
