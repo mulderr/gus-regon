@@ -2,7 +2,7 @@ module Web.BIR.BIR11.Types.Search where
 
 import Data.Text (Text)
 import GHC.Generics (Generic)
-import Data.Aeson (ToJSON)
+import Data.Aeson (FromJSON, ToJSON)
 
 import Web.BIR.BIR11.Types.Common (Regon, Nip, EntityType, EntitySilo)
 import Web.BIR.BIR11.Xml (Bir11FromXml)
@@ -45,4 +45,4 @@ data SearchResult = SearchResult
   , dataZakonczeniaDzialalnosci :: Maybe Text
   , miejscowoscPoczty :: Maybe Text
   } deriving stock (Eq, Show, Generic)
-    deriving anyclass (Bir11FromXml, ToJSON)
+    deriving anyclass (Bir11FromXml, FromJSON, ToJSON)
